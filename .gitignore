@@ -54,6 +54,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Download Folder & archive
-dwl/
+dwl/*
+!dwl/ignore.md
 
 # End of https://www.gitignore.io/api/venv,windows,visualstudiocode
