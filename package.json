@@ -1,0 +1,18 @@
+{
+  "name": "gravity_combiner",
+  "version": "0.0.1",
+  "description": "Download From Blocklist site and combine them into one file.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aspartam206/gravity_combiner.git"
+  },
+  "keywords": [
+    "pihole"
+  ],
+  "author": "Mochammad Rizki",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/aspartam206/gravity_combiner/issues"
+  },
+  "homepage": "https://github.com/aspartam206/gravity_combiner#readme"
+}
