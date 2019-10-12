@@ -21,8 +21,8 @@ class Download_Block:
         return(system.communicate())
     
     # remove commented line with sed
-    def remove_comment(self,src_path,out_path):
-        system = subprocess.Popen([f"sed '/^[[:blank:]]*#/d;s/#.*//' {src_path} > {out_path}"],
+    def remove_comment(self,src_path):
+        system = subprocess.Popen([f"sed -i '/^[[:blank:]]*#/d;s/#.*//' {src_path}"],
                                     # stdout=subprocess.PIPE,
                                     # stderr=subprocess.PIPE,
                                     universal_newlines=True, shell=True)
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     __dwlclass    = Download_Block()
     # outfile       = open('block.txt', 'w')
     final_set     = set()
-    gawk_src      = os.path.join(f"{os.getcwd()}","sed","*.txt")
+    gawk_src      = os.path.join(f"{os.getcwd()}","dwl","*.txt")
     gawk_output   = os.path.join(f"{os.getcwd()}","gawk.txt")
     sort_output   = os.path.join(f"{os.getcwd()}","sort.txt")
     index         = 1
@@ -73,22 +73,24 @@ if __name__ == "__main__":
         print(downloaded)
         index+=1
      
-    # loop through downloaded files for removing duplicates
+    # loop through downloaded files for removing comments
     print("Exec     : sed")
     for i in range(len(block_sets)):
         i+=1
         start = time.time()
         filename  = f"{i}.txt"
         src_path = f"dwl/{filename}"
-        out_path = f"sed/{filename}"
-        __dwlclass.remove_comment(src_path,out_path)
+        # out_path = f"sed/{filename}"
+        __dwlclass.remove_comment(src_path)
         print("Process took: {:.2f} seconds".format(time.time() - start))
     
+    # remove duplicate and combine to one file
     print("Exec     : gawk")
     start = time.time()
     __dwlclass.gawk(gawk_src, gawk_output)
     print("Process took: {:.2f} seconds".format(time.time() - start))
     
+    # sort the output file
     print("Exec     : sort")
     start = time.time()
     __dwlclass.sort_linux(gawk_output, sort_output)
