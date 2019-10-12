@@ -7,7 +7,7 @@
 
 ## About <a name = "about"></a>
 
-The purpose of this project is to simplified the amount of blocklist in the pihole itself. It was believed that multiple 
+The purpose of this project is to simplified the amount of blocklist in the pihole itself. It was believed that multiple file that rewrite daily gonna reduce the longevity of the flash media (sd card)
 
 ## Getting Started <a name = "getting_started"></a>
 
