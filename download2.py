@@ -4,9 +4,11 @@ import time
 import os
 
 class Download_Block:
+    
     # download and save(stream) response from url 
     def dwl(self,url,file_path):
-        r = requests.get(url,allow_redirects=True,stream=True)    
+        global s
+        r = s.get(url,allow_redirects=True,stream=True)    
         with open(file_path, 'wb') as curr_file:
                 for chunk in r.iter_content(None):
                     curr_file.write(chunk)
@@ -37,6 +39,9 @@ class Download_Block:
         return(system.communicate())
 
 if __name__ == "__main__":
+    # init requests persistance connection
+    s = requests.Session()
+    s.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0'})
     
     # set of blocklist provider link
     block_sets = set()
@@ -58,12 +63,12 @@ if __name__ == "__main__":
     
     # init
     __dwlclass    = Download_Block()
-    # outfile       = open('block.txt', 'w')
     final_set     = set()
     gawk_src      = os.path.join(f"{os.getcwd()}","dwl","*.txt")
     gawk_output   = os.path.join(f"{os.getcwd()}","gawk.txt")
     sort_output   = os.path.join(f"{os.getcwd()}","sort.txt")
     index         = 1
+    
     # loop through block_sets to download the blocklist
     for target_list in sorted(block_sets):
         print(target_list, end="   ")
@@ -72,9 +77,12 @@ if __name__ == "__main__":
         downloaded = __dwlclass.dwl(target_list,file_path)
         print(downloaded)
         index+=1
-     
+    
+    # close requests persistance connection
+    s.close()
+    
     # loop through downloaded files for removing comments
-    print("Exec     : sed")
+    print("[Exec     : sed]")
     for i in range(len(block_sets)):
         i+=1
         start = time.time()
@@ -85,13 +93,13 @@ if __name__ == "__main__":
         print("Process took: {:.2f} seconds".format(time.time() - start))
     
     # remove duplicate and combine to one file
-    print("Exec     : gawk")
+    print("[Exec     : gawk]")
     start = time.time()
     __dwlclass.gawk(gawk_src, gawk_output)
     print("Process took: {:.2f} seconds".format(time.time() - start))
     
     # sort the output file
-    print("Exec     : sort")
+    print("[Exec     : sort]")
     start = time.time()
     __dwlclass.sort_linux(gawk_output, sort_output)
     print("Process took: {:.2f} seconds".format(time.time() - start))
