@@ -57,4 +57,7 @@ $RECYCLE.BIN/
 dwl/*
 !dwl/ignore.md
 
+commit.sh
+pull_list.sh
+
 # End of https://www.gitignore.io/api/venv,windows,visualstudiocode
