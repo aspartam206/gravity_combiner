@@ -90,8 +90,8 @@ def main():
     
     # init
     gawk_src      = os.path.join(f"{os.getcwd()}","dwl","*.txt")
-    gawk_output   = os.path.join(f"{os.getcwd()}","dist","gawk.txt")
-    sort_output   = os.path.join(f"{os.getcwd()}","dist","sort.txt")
+    gawk_output   = os.path.join(f"{os.getcwd()}","blocklist","unordered.txt")
+    sort_output   = os.path.join(f"{os.getcwd()}","blocklist","ordered.txt")
     
     ## DOWNLOAD CODE
     try:
