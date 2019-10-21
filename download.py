@@ -9,7 +9,7 @@ def download_blocklist(url,file_path,s):
     with open(file_path, 'wb') as current_file:
             for chunk in r.iter_content(None):
                 current_file.write(chunk)
-    return file_path
+    return r.status_code
 
 # combine file downloaded with GNU awk
 def combine_list(src_path,output_path):
@@ -28,7 +28,7 @@ def clean_comments(src_path):
     return(system.communicate())
 
 # sort the file with linux command
-def sort_linux(src_path,out_path):
+def sort_file(src_path,out_path):
     system = subprocess.Popen([f"sort {src_path} > {out_path}"],
                                 # stdout=subprocess.PIPE,
                                 # stderr=subprocess.PIPE,
@@ -50,10 +50,10 @@ def remove_localhost(line):
     remove_list.add("ip6-allhosts")
     remove_list.add("0.0.0.0")
     
-    sentences = line.split()
-    if len(sentences) > 0:
-        line = sentences[-1]
-        line = line.lower()
+    sentences = line.split()       # split the line by whitespace
+    if len(sentences) > 0:         # remove empty line
+        line = sentences[-1]       # only get the {domain} part of the line
+        line = line.lower()        # domain is case insensitive so lower it just incase.
         if not line in remove_list:
             return line
     
@@ -103,11 +103,12 @@ def main():
         index = 1
         print("[Download:  Starting]")
         for target_list in sorted(block_sets):
-            print(f"  {target_list}", end="   ")
+            start = time.time()
             filename   = f"{index}.txt"
             file_path  = f"dwl/{filename}"
+            print(f"  {file_path}", end="\t")
             downloaded = download_blocklist(target_list,file_path,session)
-            print(downloaded)
+            print(f"  {downloaded}  {(time.time() - start):.2f} sec  \t {target_list}")
             index+=1
     finally:
         # close requests persistance connection
@@ -125,36 +126,38 @@ def main():
         filename  = f"{i}.txt"
         src_path = f"dwl/{filename}"
         clean_comments(src_path)
+        print(f"  Clean Comments took:   \t{(time.time() - start):.2f} seconds")
+        start = time.time()
         clean_non_domain_data(src_path)
-        print("  Process took: {:.2f} seconds".format(time.time() - start))        
+        print(f"  Domain Formatting took:\t{(time.time() - start):.2f} seconds")        
     
     # remove duplicate and combine to one file
     print("[Processing:  Compiling]")
     start = time.time()
     combine_list(gawk_src, gawk_output)
-    print("  Process took: {:.2f} seconds".format(time.time() - start))
+    print(f"  Process took:     \t\t{(time.time() - start):.2f} seconds")
     
     # sort the output file
-    print("[Processing: Sorting]")
+    print("[Processing:  Sorting]")
     start = time.time()
-    sort_linux(gawk_output, sort_output)
-    print("  Process took: {:.2f} seconds".format(time.time() - start))
+    sort_file(gawk_output, sort_output)
+    print(f"  Process took:     \t\t{(time.time() - start):.2f} seconds")
 
 
 if __name__ == "__main__":
-    # try:
-    #     # <<<=================== EXECUTE MAIN ===================>>>
-    #     main()
-    # except IOError:
-    #     print('Error: Input / Output Error')
-    # except ValueError:
-    #     print('Error: Value Error')
-    # except ImportError:
-    #     print('Error: NO module found.')
-    # except EOFError:
-    #     print('Error: Why did you do an EOF on me?')
-    # except KeyboardInterrupt:
-    #     print('Error: You are cancelled LOL')
-    # except:
-    #     print('An error occured, and I don\'t know why')
-    main()
+    try:
+        # <<<=================== EXECUTE MAIN ===================>>>
+        main()
+    except IOError:
+        print('Error: Input / Output Error')
+    except ValueError:
+        print('Error: Value Error')
+    except ImportError:
+        print('Error: NO module found.')
+    except EOFError:
+        print('Error: Why did you do an EOF on me?')
+    except KeyboardInterrupt:
+        print('Error: You are cancelled LOL')
+    except:
+        print('An error occured, and I don\'t know why')
+    # main()
