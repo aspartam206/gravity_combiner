@@ -142,7 +142,9 @@ def main():
     start = time.time()
     sort_file(gawk_output, sort_output)
     print(f"  Process took:     \t\t{(time.time() - start):.2f} seconds")
-
+    
+    # remove unordered output
+    os.remove(gawk_output)
 
 if __name__ == "__main__":
     try:
