@@ -1,3 +1,4 @@
+
 # gravity_combiner
 
 ## Table of Contents
@@ -7,40 +8,75 @@
 
 ## About <a name = "about"></a>
 
-The purpose of this project is to simplified the amount of blocklist in the pihole itself. It was believed that multiple file that rewrite daily gonna reduce the longevity of the flash media (sd card)
+The purpose of this project is to simplified the amount of blocklist in the `pihole` itself. It was believed that multiple file that rewrite daily gonna reduce the longevity of the flash media (sd card)
 
 ## Getting Started <a name = "getting_started"></a>
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+### Requirements
 
-What things you need to install the software and how to install them.
+1. python 3.6   `because the use of f-string`
 
+### Virtual Environment Initialization & Dependencies Installation
+
+To avoid dependency conflict, it's advised to setup virtual environment using `venv`. This tutorial use on`Ubuntu` environment. 
+
+0. Clone this repository `git clone https://github.com/aspartam206/gravity_housekeeper.git`
+1. Install venv `sudo apt-get install python3-venv`
+2. Create a new virtual environment inside project folder `python3 -m venv venv`, a new virtual environment will be generated inside `venv` folder
+3. Activate venv, for UNIX OS (Linux, MacOS, etc...) use: `source ./venv/bin/activate`
+	a. For Windows use `activate` script inside `./venv/Scripts`
+
+### Installing Requirements
+you should be able to running with just installing `requests`
 ```
 pip install requests
 ```
-
+or, if you use `pip-tools`
+```
+pip-compile
+pip-sync
+```
+or, for recommended way by community standard, use `requirements.txt`
+```
+pip install -r requirements.txt
+```
 ### Usages
 
-A step by step series of examples that tell you how to get a development env running.
-
-Start
-
+If you just average user just copy these link to your `pihole` blocklist.
 ```
-cd gravity_combiner
-python download.py
-or
+https://raw.githubusercontent.com/aspartam206/gravity_housekeeper/master/blocklist/ordered.txt
+```
+
+
+
+A step by step series how to get the compiled blocklist by yourself.
+```
 python3 download.py
 ```
-
-### Dev note
-
-these file is not working as intended
+or if you are under venv
 ```
-download_in_memory.py  [need a way to remove the commented line]
+python download.py
 ```
+the blocklist would be generated on `./blocklist/ordered.txt`
 
+### Project Structure
+```
+gravity_housekeeper/
+├── LICENSE.md
+├── README.md
+├── blocklist         # dist folder for the compiled blocklist
+│   ├── ignore.md
+│   └── ordered.txt   # the compiled blocklist
+├── download.py       # the python script to run
+├── dwl               # temp folder for all blocklist that downloaded
+│   ├── *.txt
+│   └── ignore.md
+├── package.json
+├── requirements.in   # base requirements
+└── requirements.txt  # static(stable) requirements
+```
 ### License
 
 ```
