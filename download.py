@@ -68,7 +68,12 @@ def clean_non_domain_data(path_file):
                     # print(line)
                     temp.write(f"{line}\n") 
     os.replace(temp_file, path_file)
-    
+
+def snooze_for(how_much):
+    start = time.time()
+    time.sleep(how_much)
+    return (time.time() - start)
+
 def main():
     # set of blocklist provider link
     block_sets = set()
@@ -117,25 +122,36 @@ def main():
         del(index,filename,file_path,downloaded)
         print("[Download:  Finished]\n")
     
+    ### Sleep so some caching solution could finish write to SSD  # bug found on developer low-end server
+    print(f"Sleep for {snooze_for(5):.1f} sec \n")
+    
     ## PROCESSING CODE
     # loop through downloaded files for removing comments
     print("[Processing:  Cleaning Comments]")
     for i in range(len(block_sets)):
         i+=1
-        start = time.time()
         filename  = f"{i}.txt"
         src_path = f"dwl/{filename}"
+        
+        start = time.time()
         clean_comments(src_path)
         print(f"  Clean Comments took:   \t{(time.time() - start):.2f} seconds")
+        
+        snooze_for(1) # wait to full write to SSD from cache
+        
         start = time.time()
         clean_non_domain_data(src_path)
         print(f"  Domain Formatting took:\t{(time.time() - start):.2f} seconds")        
+    
+    print(f"\nSleep for {snooze_for(2):.1f} sec \n")
     
     # remove duplicate and combine to one file
     print("[Processing:  Compiling]")
     start = time.time()
     combine_list(gawk_src, gawk_output)
     print(f"  Process took:     \t\t{(time.time() - start):.2f} seconds")
+    
+    print(f"\nSleep for {snooze_for(2):.1f} sec \n")
     
     # sort the output file
     print("[Processing:  Sorting]")
