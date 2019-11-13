@@ -1,6 +1,7 @@
 import subprocess
 import time
 import os
+import traceback
 
 # combine file downloaded with GNU awk
 def combine_list(src_path,output_path):
@@ -133,4 +134,9 @@ if __name__ == "__main__":
     #     print('Error: You are cancelled LOL')
     # except:
     #     print('An error occured, and I don\'t know why')
-    main()
+    
+    try:
+        main()
+    except Exception as e:
+        print(e)
+        traceback.print_exc()
