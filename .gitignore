@@ -56,7 +56,7 @@ $RECYCLE.BIN/
 
 # Download Folder & archive
 dwl/*
-!dwl/ignore.md
+!dwl/ignore.file
 
 commit.sh
 pull_list.sh

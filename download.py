@@ -5,9 +5,11 @@ import os
     
 # download and save(stream) response from url 
 def download_blocklist(url,file_path,s):
-    r = s.get(url,allow_redirects=True,stream=True)    
-    with open(file_path, 'wb') as current_file:
-            for chunk in r.iter_content(None):
+    r = s.get(url,allow_redirects=True,stream=True)
+    if r.encoding is None:
+        r.encoding = 'utf-8'    
+    with open(file_path, 'w', encoding="utf-8") as current_file:
+            for chunk in r.iter_content(chunk_size=None, decode_unicode=True):
                 current_file.write(chunk)
     return r.status_code
 

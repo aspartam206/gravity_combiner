@@ -52,7 +52,7 @@ def remove_localhost(line):
 def clean_non_domain_data(path_file):  
     temp_file = f"{path_file}.tmp" 
     with open(temp_file,'w') as temp:
-        with open(path_file, 'r', encoding="ISO-8859-1") as current_file:
+        with open(path_file, 'r', encoding="utf-8") as current_file: #ISO-8859-1
             for raw_line in current_file:
                 # call remove_localhost to split the line and get only domain
                 line = remove_localhost(raw_line)
