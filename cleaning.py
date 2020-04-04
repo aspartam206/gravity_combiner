@@ -1,6 +1,7 @@
 import subprocess
 import time
 import os
+import glob
 import traceback
 
 # combine file downloaded with GNU awk
@@ -117,6 +118,8 @@ def main():
     
     # remove unordered output
     os.remove(gawk_output)
+    for file in glob.glob(os.path.join(path_dwl, "*.txt")):
+        os.remove(file)
 
 if __name__ == "__main__":
     # try:

@@ -5,13 +5,23 @@ import os
     
 # download and save(stream) response from url 
 def download_blocklist(url,file_path,s):
-    r = s.get(url,allow_redirects=True,stream=True)
-    if r.encoding is None:
-        r.encoding = 'utf-8'    
-    with open(file_path, 'w', encoding="utf-8") as current_file:
-            for chunk in r.iter_content(chunk_size=None, decode_unicode=True):
-                current_file.write(chunk)
-    return r.status_code
+    try:
+        r = s.get(url,allow_redirects=True,stream=True)
+        if r.encoding is None:
+            r.encoding = 'utf-8'    
+        with open(file_path, 'w', encoding="utf-8") as current_file:
+                for chunk in r.iter_content(chunk_size=None, decode_unicode=True):
+                    current_file.write(chunk)
+        return r.status_code
+    except requests.exceptions.Timeout:
+        return "Request Timeout"
+    except requests.exceptions.TooManyRedirects:
+        return "Too Many Redirect"
+    except requests.exceptions as e:
+        return e
+    except requests.exceptions.RequestException as e:
+        return e
+    
 
 def main():
     # set of blocklist provider link
@@ -39,7 +49,6 @@ def main():
     block_sets.add('https://dbl.oisd.nl')
     
     # firebog list
-    
     r =  requests.get('https://v.firebog.net/hosts/lists.php?type=tick')
     
     for eLine in r.iter_lines(decode_unicode=True):
@@ -49,6 +58,11 @@ def main():
     # for target in sorted(block_sets):
     #     print(target)
     
+    block_sets.discard("https://hosts-file.net/emd.txt")
+    block_sets.discard("https://hosts-file.net/ad_servers.txt")
+    block_sets.discard("https://hosts-file.net/exp.txt")
+    block_sets.discard("https://hosts-file.net/grm.txt")
+    block_sets.discard("https://hosts-file.net/psh.txt")
     ## DOWNLOAD CODE
     try:
         # init requests persistance connection
