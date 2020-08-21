@@ -1,6 +1,8 @@
 
 # Gravity Housekeeper
 
+### [DEPRECATED] AS OF PIHOLE 5 THIS IS NO LONGER NEEDED BECAUSE OF GROUP BLOCKLIST FEATURE
+
 ## Table of Contents
 
 - [About](#about)
