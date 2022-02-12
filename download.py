@@ -29,24 +29,27 @@ def main():
     
     # Default Pi-hole List
     block_sets.add('https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts')
-    block_sets.add('https://mirror1.malwaredomains.com/files/justdomains')
+    # block_sets.add('https://mirror1.malwaredomains.com/files/justdomains')
     block_sets.add('http://sysctl.org/cameleon/hosts')
     block_sets.add('https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt')
     block_sets.add('https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt')
     block_sets.add('https://hosts-file.net/ad_servers.txt')
     
     # the Block List Project
-    block_sets.add('https://blocklist.site/app/dl/ads')
-    block_sets.add('https://blocklist.site/app/dl/spam')
-    block_sets.add('https://blocklist.site/app/dl/scam')
-    block_sets.add('https://blocklist.site/app/dl/crypto')
-    block_sets.add('https://blocklist.site/app/dl/fraud')
-    block_sets.add('https://blocklist.site/app/dl/malware')
-    block_sets.add('https://blocklist.site/app/dl/ransomware')
-    block_sets.add('https://blocklist.site/app/dl/tracking')
+    # block_sets.add('https://blocklist.site/app/dl/ads')
+    # block_sets.add('https://blocklist.site/app/dl/spam')
+    # block_sets.add('https://blocklist.site/app/dl/scam')
+    # block_sets.add('https://blocklist.site/app/dl/crypto')
+    # block_sets.add('https://blocklist.site/app/dl/fraud')
+    # block_sets.add('https://blocklist.site/app/dl/malware')
+    # block_sets.add('https://blocklist.site/app/dl/ransomware')
+    # block_sets.add('https://blocklist.site/app/dl/tracking')
     
     # dbl.oisd.nl | Internet's #1 domain blocklist
-    block_sets.add('https://dbl.oisd.nl')
+    # block_sets.add('https://dbl.oisd.nl')
+
+    # Indonesian Lists
+    block_sets.add('https://raw.githubusercontent.com/aspartam206/indonesian-adlists/main/block.txt')
     
     # firebog list
     r =  requests.get('https://v.firebog.net/hosts/lists.php?type=tick')
